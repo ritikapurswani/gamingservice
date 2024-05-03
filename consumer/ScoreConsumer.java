@@ -13,6 +13,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 @Service
 public class ScoreConsumer {
 
@@ -25,11 +27,23 @@ public class ScoreConsumer {
     private ObjectMapper objectMapper;
 
     @KafkaListener(topics = "${kafka.topic:gaming-service-topic}", groupId = "${kafka.consumer.group-id}")
-    public void consume(ConsumerRecord<String, String> record) throws JsonProcessingException {
+    public void consume(ConsumerRecord<String, String> record) throws Exception {
         LOGGER.info("Received message: {}", record.toString());
-        String jsonString = record.value();
-        ScoreMessage scoreDTO = objectMapper.readValue(jsonString, ScoreMessage.class);
-        System.out.println("Received message: " + scoreDTO);
-        scoreService.insertScore(scoreDTO);
+        try {
+            LOGGER.info("Received message: {}", record.toString());
+            String jsonString = record.value();
+            ScoreMessage scoreDTO = objectMapper.readValue(jsonString, ScoreMessage.class);
+            CompletableFuture.runAsync(() -> {
+                try {
+                    scoreService.insertScore(scoreDTO);
+                } catch (Exception e) {
+                    LOGGER.error("Error occurred in asynchronous database insertion: {}", e.getMessage());
+                }
+            });
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Error processing JSON: {}", e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("An error occurred while consuming the message: {}", e.getMessage());
+        }
     }
 }

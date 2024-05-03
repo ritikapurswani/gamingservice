@@ -6,7 +6,7 @@ import com.example.gamingservice.dto.ScoreMessage;
 import java.util.List;
 
 public interface ScoreService {
-    List<PlayerScore> getTopPlayers();
+    List<PlayerScore> getTopPlayers() throws Exception;
 
-    void insertScore(ScoreMessage scoreMessage);
+    void insertScore(ScoreMessage scoreMessage) throws Exception;
 }

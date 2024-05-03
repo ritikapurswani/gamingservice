@@ -6,7 +6,7 @@ import com.example.gamingservice.dto.ScoreMessage;
 import java.util.List;
 
 public interface PlayerScoresDao {
-    List<PlayerScore> getTopPlayers(int limit);
+    List<PlayerScore> getTopPlayers(int limit) throws Exception;
 
     void insertScore(ScoreMessage scoreMessage);
 }

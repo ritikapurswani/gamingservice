@@ -20,7 +20,7 @@ public class ScoreServiceImpl implements ScoreService {
     int limit;
 
     @Override
-    public List<PlayerScore> getTopPlayers() {
+    public List<PlayerScore> getTopPlayers() throws Exception {
         return playerScoresDao.getTopPlayers(limit);
     }
 

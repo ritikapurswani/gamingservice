@@ -25,6 +25,8 @@ public class DatabaseConfig {
     private int maxPoolSizeSlave;
     @Value("${max.pool.size:60}")
     private int maxPoolSizeMaster;
+    @Value("jdbc.password")
+    private String jdbcPassword;
 
     @Autowired
     private Environment commonProperties;
@@ -36,7 +38,7 @@ public class DatabaseConfig {
         HikariDataSource hikariDataSource = new HikariDataSource();
         hikariDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         hikariDataSource.setUsername(jdbcUser);
-        hikariDataSource.setPassword("AVNS_Khs1oZjsGDq_7hZ5qes");
+        hikariDataSource.setPassword(jdbcPassword);
         hikariDataSource.setJdbcUrl(jdbcMasterUrl);
         hikariDataSource.setMinimumIdle(5);
         hikariDataSource.setMaximumPoolSize(maxPoolSizeMaster);
@@ -49,7 +51,7 @@ public class DatabaseConfig {
         hikariDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         hikariDataSource.setJdbcUrl(jdbcSlaveUrl);
         hikariDataSource.setUsername(jdbcUser);
-        hikariDataSource.setPassword("AVNS_Khs1oZjsGDq_7hZ5qes");
+        hikariDataSource.setPassword(jdbcPassword);
         hikariDataSource.setMinimumIdle(5);
         hikariDataSource.setMaximumPoolSize(maxPoolSizeSlave);
         return hikariDataSource;

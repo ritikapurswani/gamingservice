@@ -18,7 +18,7 @@ public class ScoreController {
         private ScoreService scoreService;
 
         @GetMapping
-        public List<PlayerScore> getTopPlayers(@RequestHeader Map<String,Object> headers) {
+        public List<PlayerScore> getTopPlayers(@RequestHeader Map<String,Object> headers) throws Exception {
                 LOGGER.info("Fetching top players");
                 return scoreService.getTopPlayers();
         }
