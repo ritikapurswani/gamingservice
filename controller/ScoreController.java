@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/fetch/topPlayers")
+@RequestMapping("/api/v1/players")
 public class ScoreController {
         private static final Logger LOGGER = LoggerFactory.getLogger(ScoreController.class);
 
         @Autowired
         private ScoreService scoreService;
 
-        @GetMapping
+        @GetMapping("/leaderboard/fetch")
         public List<PlayerScore> getTopPlayers(@RequestHeader Map<String,Object> headers) throws Exception {
                 LOGGER.info("Fetching top players");
                 return scoreService.getTopPlayers();
