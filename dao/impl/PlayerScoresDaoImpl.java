@@ -8,6 +8,7 @@ import com.example.gamingservice.dto.ScoreMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class PlayerScoresDaoImpl implements PlayerScoresDao {
     JdbcTemplate jdbcTemplateSlave;
 
     @Override
-    public List<PlayerScore> getTopPlayers(int limit) throws Exception {
+    public List<PlayerScore> getTopPlayers(int limit) {
         try {
             return jdbcTemplateSlave.query(Queries.FETCH_TOP_PLAYERS, new Object[]{limit}, (rs, rowNum) -> {
                 PlayerScore score = new PlayerScore();
@@ -43,7 +44,7 @@ public class PlayerScoresDaoImpl implements PlayerScoresDao {
     }
 
     @Override
-    public void insertScore(ScoreMessage scoreMessage) {
-        jdbcTemplate.update(Queries.INSERT_SCORE, scoreMessage.getPlayerName(), scoreMessage.getScore(), scoreMessage.getCustId());
+    public void insertScore(ScoreMessage scoreMessage) throws DataAccessException {
+        jdbcTemplate.update(Queries.INSERT_SCORE, scoreMessage.getPlayerName(), scoreMessage.getScore(), scoreMessage.getUserId());
     }
 }
